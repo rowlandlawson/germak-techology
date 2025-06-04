@@ -1,0 +1,29 @@
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.swiper-slide {
+  background-size: cover;
+  background-position: center;
+}
+
+/* .swiper {
+  height: 100vh;
+} */
+
+.testimonial-swiper {
+  height: 25vh;
+}
+
+.testimonial-swiper-slide {
+  border-radius: 2rem;
+  padding: 1rem;
+  background-color: #1f2937;
+  color: white;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+

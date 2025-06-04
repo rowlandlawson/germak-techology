@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              600: '#2563eb',
+              500: '#3b82f6',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .sidebar {
+      transition: transform 0.3s ease-in-out;
+    }
+    .sidebar-hidden {
+      transform: translateX(-100%);
+    }
+    .sidebar-visible {
+      transform: translateX(0);
+    }
+    .content-section {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300">
+
+  <!-- Mobile menu button -->
+  <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-50 bg-primary-600 text-white p-2 rounded-lg shadow-md hover:bg-primary-500 transition-colors">
+    <i data-lucide="menu"></i>
+  </button>
+
+  <!-- Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 md:hidden"></div>
+
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar sidebar-hidden fixed z-50 md:relative md:translate-x-0 md:flex md:flex-col bg-gray-800 text-white w-64 p-6 h-full border-r border-gray-700">
+      <div class="flex items-center mb-8">
+        <i data-lucide="shield" class="w-8 h-8 text-primary-500 mr-2"></i>
+        <h2 class="text-2xl font-bold text-primary-400">Admin Panel</h2>
+      </div>
+      <nav class="space-y-2">
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="dashboard">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="orders">
+          <i data-lucide="package" class="w-5 h-5"></i>
+          <span>Orders</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="messages">
+          <i data-lucide="mail" class="w-5 h-5"></i>
+          <span>Messages</span>
+          <span class="ml-auto bg-primary-500 text-xs px-2 py-1 rounded-full">3</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="settings">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span>Settings</span>
+        </a>
+      </nav>
+      <div class="mt-auto pt-6 border-t border-gray-700">
+        <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-gray-700">
+          <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <p class="text-sm font-medium">Admin User</p>
+            <p class="text-xs text-gray-400">admin@example.com</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 overflow-y-auto pt-20 md:pt-6" id="main-content">
+      <header class="flex justify-between items-center mb-8">
+        <h1 class="text-2xl font-bold text-primary-500" id="page-title">Dashboard</h1>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+          </div>
+          <button id="mode-toggle" class="bg-gray-200 dark:bg-gray-700 px-3 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+            <i data-lucide="moon" id="mode-icon" class="w-4 h-4 hidden dark:block"></i>
+            <i data-lucide="sun" id="mode-icon-light" class="w-4 h-4 block dark:hidden"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Section -->
+      <section id="dashboard" class="content-section">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">Total Revenue</p>
+                <h3 class="text-2xl font-bold mt-1">$24,780</h3>
+              </div>
+              <div class="bg-primary-100 dark:bg-primary-900/30 p-3 rounded-full">
+                <i data-lucide="dollar-sign" class="w-5 h-5 text-primary-600 dark:text-primary-400"></i>
+              </div>
+            </div>
+            <p class="text-sm text-green-500 mt-2 flex items-center">
+              <i data-lucide="trending-up" class="w-4 h-4 mr-1"></i>
+              <span>12.5% from last month</span>
+            </p>
+          </div>
+          
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">New Orders</p>
+                <h3 class="text-2xl font-bold mt-1">1,245</h3>
+              </div>
+              <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-full">
+                <i data-lucide="shopping-cart" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+              </div>
+            </div>
+            <p class="text-sm text-green-500 mt-2 flex items-center">
+              <i data-lucide="trending-up" class="w-4 h-4 mr-1"></i>
+              <span>8.2% from last month</span>
+            </p>
+          </div>
+          
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">Active Users</p>
+                <h3 class="text-2xl font-bold mt-1">892</h3>
+              </div>
+              <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full">
+                <i data-lucide="users" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+              </div>
+            </div>
+            <p class="text-sm text-red-500 mt-2 flex items-center">
+              <i data-lucide="trending-down" class="w-4 h-4 mr-1"></i>
+              <span>3.1% from last month</span>
+            </p>
+          </div>
+          
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-gray-500 dark:text-gray-400 text-sm">Conversion Rate</p>
+                <h3 class="text-2xl font-bold mt-1">3.42%</h3>
+              </div>
+              <div class="bg-purple-100 dark:bg-purple-900/30 p-3 rounded-full">
+                <i data-lucide="bar-chart-2" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+              </div>
+            </div>
+            <p class="text-sm text-green-500 mt-2 flex items-center">
+              <i data-lucide="trending-up" class="w-4 h-4 mr-1"></i>
+              <span>1.8% from last month</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 mb-8">
+          <h3 class="text-lg font-semibold mb-4">Recent Activity</h3>
+          <div class="space-y-4">
+            <div class="flex items-start gap-4">
+              <div class="bg-green-100 dark:bg-green-900/30 p-2 rounded-full mt-1">
+                <i data-lucide="check-circle" class="w-4 h-4 text-green-600 dark:text-green-400"></i>
+              </div>
+              <div>
+                <p class="font-medium">Order #12345 completed</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">2 minutes ago</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="bg-blue-100 dark:bg-blue-900/30 p-2 rounded-full mt-1">
+                <i data-lucide="user-plus" class="w-4 h-4 text-blue-600 dark:text-blue-400"></i>
+              </div>
+              <div>
+                <p class="font-medium">New user registered</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">15 minutes ago</p>
+              </div>
+            </div>
+            <div class="flex items-start gap-4">
+              <div class="bg-yellow-100 dark:bg-yellow-900/30 p-2 rounded-full mt-1">
+                <i data-lucide="alert-circle" class="w-4 h-4 text-yellow-600 dark:text-yellow-400"></i>
+              </div>
+              <div>
+                <p class="font-medium">Server maintenance scheduled</p>
+                <p class="text-sm text-gray-500 dark:text-gray-400">1 hour ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Order Section -->
+      <section id="orders" class="content-section hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold">Recent Orders</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Order ID</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Customer</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Amount</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">#12345</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">John Doe</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Completed</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-05-15</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">$245.00</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">#12346</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Jane Smith</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Processing</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-05-14</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">$189.00</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">#12347</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">Robert Johnson</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Shipped</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-05-13</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">$320.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+            <div class="text-sm text-gray-500 dark:text-gray-400">Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">24</span> results</div>
+            <div class="flex space-x-2">
+              <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700">Previous</button>
+              <button class="px-3 py-1 rounded-md bg-primary-600 text-white text-sm font-medium hover:bg-primary-700">1</button>
+              <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700">2</button>
+              <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700">3</button>
+              <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700">Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Message Section -->
+      <section id="messages" class="content-section hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold">Messages</h3>
+          </div>
+          <div class="divide-y divide-gray-200 dark:divide-gray-700">
+            <!-- Message 1 -->
+            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer message-item" 
+                 data-sender="John Doe" 
+                 data-email="john@example.com"
+                 data-time="2 hours ago"
+                 data-subject="Regarding my recent order #12345"
+                 data-message="Hello, I wanted to check the status of my recent order #12345. The tracking information hasn't updated in 3 days. Could you please look into this? Thank you!">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                  <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5 text-primary-600 dark:text-primary-400"></i>
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">John Doe</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">2 hours ago</p>
+                  </div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Regarding my recent order #12345</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Message 2 -->
+            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer message-item" 
+                 data-sender="Jane Smith" 
+                 data-email="jane@example.com"
+                 data-time="5 hours ago"
+                 data-subject="Question about your products"
+                 data-message="Hi there, I'm interested in your premium product line but had a few questions before purchasing. What are the main differences between the standard and premium versions? Also, do you offer any bulk discounts for orders over 50 units?">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                  <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">Jane Smith</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">5 hours ago</p>
+                  </div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Question about your products</p>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Message 3 -->
+            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer message-item" 
+                 data-sender="Support Team" 
+                 data-email="support@company.com"
+                 data-time="1 day ago"
+                 data-subject="Your support ticket has been resolved"
+                 data-message="We're happy to inform you that your recent support ticket (#ST-7842) regarding the login issues has been resolved. The issue was caused by a temporary server configuration error that has now been fixed. Please try logging in again and let us know if you experience any further issues. Thank you for your patience!">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                  <div class="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5 text-purple-600 dark:text-purple-400"></i>
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">Support Team</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">1 day ago</p>
+                  </div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Your support ticket has been resolved</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+        <!-- Message Modal -->
+        <div id="message-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+          <div class="absolute inset-0 bg-black bg-opacity-50" id="modal-overlay"></div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] flex flex-col z-10 mx-4">
+            <!-- Modal Header -->
+            <div class="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+              <h3 class="text-lg font-semibold" id="modal-subject">Message Subject</h3>
+              <button id="modal-close" class="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300">
+                <i data-lucide="x" class="w-5 h-5"></i>
+              </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto flex-1">
+              <div class="mb-6">
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                      <i data-lucide="user" class="w-5 h-5 text-primary-600 dark:text-primary-400"></i>
+                    </div>
+                    <div>
+                      <p class="font-medium" id="modal-sender">Sender Name</p>
+                      <p class="text-sm text-gray-500 dark:text-gray-400" id="modal-email">sender@example.com</p>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400" id="modal-time">2 hours ago</p>
+                </div>
+                
+                <div class="mt-4 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p class="whitespace-pre-line" id="modal-message">Full message content will appear here...</p>
+                </div>
+              </div>
+              
+              <!-- Reply Form -->
+              <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                <h4 class="font-medium mb-4">Reply to this message</h4>
+                <form id="reply-form">
+                  <div class="mb-4">
+                    <label for="reply-message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Your response</label>
+                    <textarea id="reply-message" rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" placeholder="Type your response here..."></textarea>
+                  </div>
+                  <div class="flex justify-end gap-3">
+                    <button type="button" id="cancel-reply" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                      Cancel
+                    </button>
+                    <button type="submit" class="px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 flex items-center gap-2">
+                      <i data-lucide="send" class="w-4 h-4"></i>
+                      Send Response
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Setting Section -->
+      <section id="settings" class="content-section hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold">Account Settings</h3>
+          </div>
+          <div class="p-6">
+            <form class="space-y-6">
+              <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Full Name</label>
+                <input type="text" id="name" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" value="Admin User">
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email Address</label>
+                <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" value="admin@example.com">
+              </div>
+              <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">New Password</label>
+                <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" placeholder="••••••••">
+              </div>
+              <div>
+                <label for="confirm-password" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Confirm Password</label>
+                <input type="password" id="confirm-password" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" placeholder="••••••••">
+              </div>
+              <div>
+                <label class="inline-flex items-center">
+                  <input type="checkbox" class="rounded border-gray-300 text-primary-600 shadow-sm focus:border-primary-300 focus:ring focus:ring-primary-200 focus:ring-opacity-50 dark:bg-gray-700 dark:border-gray-600">
+                  <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">Receive email notifications</span>
+                </label>
+              </div>
+              <div class="flex justify-end">
+                <button type="button" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">Cancel</button>
+                <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize Lucide icons
+      lucide.createIcons();
+
+      // Sidebar functionality
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      const menuToggle = document.getElementById('menu-toggle');
+      
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.remove('sidebar-hidden');
+        sidebar.classList.add('sidebar-visible');
+        overlay.classList.remove('hidden');
+      });
+
+      overlay.addEventListener('click', () => {
+        sidebar.classList.add('sidebar-hidden');
+        sidebar.classList.remove('sidebar-visible');
+        overlay.classList.add('hidden');
+      });
+
+      // Navigation switching
+      const sections = document.querySelectorAll('.content-section');
+      const pageTitle = document.getElementById('page-title');
+      const links = document.querySelectorAll('.sidebar-link');
+
+      links.forEach(link => {
+        link.addEventListener('click', e => {
+          e.preventDefault();
+          const target = link.dataset.target;
+          const linkText = link.querySelector('span').textContent;
+
+          sections.forEach(section => section.classList.add('hidden'));
+          document.getElementById(target).classList.remove('hidden');
+          pageTitle.textContent = linkText;
+
+          // Close sidebar on mobile
+          sidebar.classList.add('sidebar-hidden');
+          sidebar.classList.remove('sidebar-visible');
+          overlay.classList.add('hidden');
+        });
+      });
+
+      // Dark mode toggle
+      const modeToggle = document.getElementById('mode-toggle');
+      
+      modeToggle.addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+      });
+
+      // Check for saved dark mode preference
+      if (localStorage.getItem('darkMode') === 'true' || 
+          (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      }
+
+      // Message modal functionality
+      const messageItems = document.querySelectorAll('.message-item');
+      const messageModal = document.getElementById('message-modal');
+      const modalOverlay = document.getElementById('modal-overlay');
+      const modalClose = document.getElementById('modal-close');
+      const modalSender = document.getElementById('modal-sender');
+      const modalEmail = document.getElementById('modal-email');
+      const modalTime = document.getElementById('modal-time');
+      const modalSubject = document.getElementById('modal-subject');
+      const modalMessage = document.getElementById('modal-message');
+      const replyForm = document.getElementById('reply-form');
+      const cancelReply = document.getElementById('cancel-reply');
+
+      // Open modal when clicking a message
+      messageItems.forEach(item => {
+        item.addEventListener('click', function() {
+          modalSender.textContent = this.dataset.sender;
+          modalEmail.textContent = this.dataset.email;
+          modalTime.textContent = this.dataset.time;
+          modalSubject.textContent = this.dataset.subject;
+          modalMessage.textContent = this.dataset.message;
+          
+          messageModal.classList.remove('hidden');
+          document.body.style.overflow = 'hidden';
+        });
+      });
+
+      // Close modal function
+      function closeMessageModal() {
+        messageModal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+
+      // Close modal handlers
+      modalOverlay.addEventListener('click', closeMessageModal);
+      modalClose.addEventListener('click', closeMessageModal);
+      cancelReply.addEventListener('click', closeMessageModal);
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && !messageModal.classList.contains('hidden')) {
+          closeMessageModal();
+        }
+      });
+
+      // Handle reply form submission
+      replyForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const replyMessage = document.getElementById('reply-message').value;
+        
+        // Here you would typically send the reply to your backend
+        console.log('Replying to:', modalEmail.textContent);
+        console.log('Message:', replyMessage);
+        
+        // Show success message (replace with actual backend integration)
+        alert('Your response has been sent successfully!');
+        closeMessageModal();
+        this.reset();
+      });
+    });
+  </script>
+</body>
+</html>

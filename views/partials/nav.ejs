@@ -1,0 +1,47 @@
+<!-- Navbar -->
+<nav class="bg-gray-800 text-white sticky top-0 z-50 border-b border-gray-700 space-x-8">
+  <div class="container mx-auto flex justify-between items-center px-6 py-4">
+    <!-- Logo -->
+    <a href="#" class="text-2xl font-bold text-emerald-400">HomeSolutions</a>
+
+    <!-- Desktop Menu -->
+    <div class="hidden md:flex space-x-6">
+      <a href="#hero" class="hover:text-emerald-400 transition-colors">Home</a>
+      <a href="#services" class="hover:text-emerald-400 transition-colors">Services</a>
+      <a href="#portfolio" class="hover:text-emerald-400 transition-colors">Projects</a>
+      <a href="#testimonials" class="hover:text-emerald-400 transition-colors">Testimonials</a>
+      <a href="#contact" class="hover:text-emerald-400 transition-colors">Contact</a>
+    </div>
+
+    <div class="hidden md:flex space-x-6">
+      <a href="/login" class="hover:text-emerald-400 transition-colors">Login</a>
+      <a href="/register" class="hover:text-emerald-400 transition-colors">Register</a>
+      <a href="#" class="hover:text-emerald-400 transition-colors">
+        <i class="fa-solid fa-cart-shopping"></i>
+      </a>
+    </div>
+
+    <!-- Mobile Toggle -->
+    <button id="menu-toggle" class="md:hidden focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+        viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="md:hidden hidden px-6 pb-4 space-y-4 bg-gray-700">
+    <a href="#hero" class="block hover:text-emerald-400 transition-colors">Home</a>
+    <a href="#services" class="block hover:text-emerald-400 transition-colors">Services</a>
+    <a href="#portfolio" class="block hover:text-emerald-400 transition-colors">Projects</a>
+    <a href="#testimonials" class="block hover:text-emerald-400 transition-colors">Testimonials</a>
+    <a href="#contact" class="block hover:text-emerald-400 transition-colors">Contact</a>
+    <a href="/login" class="block hover:text-emerald-400 transition-colors">Login</a>
+    <a href="/register" class="block hover:text-emerald-400 transition-colors">Register</a>
+    <a href="#" class="block hover:text-emerald-400 transition-colors">
+      <i class="fa-solid fa-cart-shopping"></i>
+    </a>
+  </div>
+</nav>

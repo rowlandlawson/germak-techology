@@ -1,0 +1,433 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+<%- include('partials/alerts') %>
+  <!-- Hero Swiper -->
+  <header class="relative">
+    <div class="swiper hero-swiper h-screen">
+      <div class="swiper-wrapper">
+
+        <!-- Slide 1 -->
+        <div class="swiper-slide bg-cover bg-center h-screen relative" style="background-image: url('img/banner1.jpeg');">
+            <div class="overlay absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div class="text-center max-w-3xl px-4">
+                <h1 class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-blue-500 mb-4">
+                  Your Trusted Partner for Home & Business Solutions
+                </h1>
+                <p class="text-lg md:text-xl text-gray-200 mb-6">
+                  Electrical, Home Automation, Security & Maintenance Services
+                </p>
+                <a href="#services" class="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg transition duration-300">
+                  Explore Our Services
+                </a>
+              </div>
+            </div>
+          </div>
+          
+
+        <!-- Slide 2 -->
+        <div class="swiper-slide bg-cover bg-center h-screen relative" style="background-image: url('img/banner2.jpeg');">
+          <div class="overlay w-full h-full flex items-center justify-center">
+            <div class="text-center max-w-3xl">
+              <h1 class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-blue-500 mb-4">
+                Innovative Electrical & Automation Experts
+              </h1>
+              <p class="text-lg md:text-xl text-gray-200 mb-6">
+                Bringing smart tech to your home and business with ease and excellence.
+              </p>
+              <a href="#contact" class="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg transition duration-300">
+                Contact Us
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="swiper-slide bg-cover bg-center h-screen relative" style="background-image: url('img/banner3.jpeg');">
+          <div class="overlay w-full h-full flex items-center justify-center">
+            <div class="text-center max-w-3xl">
+              <h1 class="text-4xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-blue-500 mb-4">
+                Your Smart Home, Simplified
+              </h1>
+              <p class="text-lg md:text-xl text-gray-200 mb-6">
+                Explore our range of smart home solutions designed to enhance convenience and security.
+              </p>
+              <a href="#about" class="bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white px-8 py-3 rounded-full font-semibold shadow-lg transition duration-300">
+                Learn More
+              </a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- Pagination and navigation -->
+      <div class="swiper-pagination"></div>
+      <!-- <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div> -->
+    </div>
+  </header>
+
+  <!-- How it works -->
+  <section class="py-20 bg-gray-800">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-bold mb-12 text-white">How It Works</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <!-- Step 1 -->
+        <div class="bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 hover:border-emerald-400 border border-gray-700">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-pencil-alt"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-white">Describe Your Need</h3>
+          <p class="text-gray-300">Tell us about the automation solution you're looking for.</p>
+        </div>
+  
+        <!-- Step 2 -->
+        <div class="bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 hover:border-emerald-400 border border-gray-700">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-file-invoice-dollar"></i>
+          </div>
+          <h3 class="text-xl font-semibold mb-2 text-white">Get a Free Quote</h3>
+          <p class="text-gray-300">We’ll provide you with a custom quote and plan.</p>
+        </div>
+  
+        <!-- Step 3 -->
+        <div class="bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 hover:border-emerald-400 border border-gray-700">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-tools"></i>
+          </div>
+          <h3 class="text-xl font-semibold text-white">Installation & Support</h3>
+          <p class="text-gray-300">Our expert team gets it installed and supports you afterward.</p>
+        </div>
+  
+      </div>
+    </div>
+  </section> <!-- End of How it works -->
+  
+    <!-- Our services -->
+  <section id="services" class="py-20 bg-gray-800">
+    <div class="container mx-auto text-center">
+      <h2 class="text-3xl font-semibold text-white mb-12">Our Services</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        <!-- Service 1 -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-plug"></i> <!-- You can use FontAwesome or your own icon -->
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Electrical Installations</h3>
+          <p class="text-gray-300">We provide reliable and efficient electrical installation services for homes and businesses. Whether it’s a new installation or an upgrade, we’ve got you covered.</p>
+        </div>
+  
+        <!-- Service 2 -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-cogs"></i> <!-- You can use FontAwesome or your own icon -->
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Home Automation</h3>
+          <p class="text-gray-300">Automate your home for a smarter living experience. From lighting control to security systems, we offer complete home automation solutions tailored to your needs.</p>
+        </div>
+  
+        <!-- Service 3 -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-video"></i> <!-- Icon for security systems -->
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Smart Security Systems</h3>
+          <p class="text-gray-300">Enhance your safety with our smart security installations. We provide CCTV systems, motion sensors, smart locks, and remote monitoring solutions tailored to your home or business.</p>
+        </div>
+        
+  
+        <!-- Service 4 -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-tools"></i> <!-- You can use FontAwesome or your own icon -->
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Maintenance Services</h3>
+          <p class="text-gray-300">We offer comprehensive maintenance services for all your electrical and automation systems. Regular check-ups and troubleshooting ensure your systems stay in top shape.</p>
+        </div>
+  
+        <!-- Service 5 -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-lightbulb"></i> <!-- You can use FontAwesome or your own icon -->
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Energy Solutions</h3>
+          <p class="text-gray-300">We provide energy-efficient solutions, including solar panel installations and energy audits, to help you reduce costs and move towards sustainable energy use.</p>
+        </div>
+  
+        <!-- Service 6 -->
+        <div class="bg-gray-700 p-6 rounded-lg shadow-lg hover:shadow-xl transition">
+          <div class="text-emerald-400 text-4xl mb-4">
+            <i class="fas fa-hands-helping"></i> <!-- You can use FontAwesome or your own icon -->
+          </div>
+          <h3 class="text-xl font-semibold text-white mb-2">Consultation Services</h3>
+          <p class="text-gray-300">Our team offers expert consultation services to help you plan and execute your electrical and automation projects. We guide you through every step for optimal results.</p>
+        </div>
+      </div>
+    </div>
+  </section> <!--End of Our services -->
+
+  <!-- Product section -->
+  <section id="products" class="py-20 bg-gray-900">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center text-white mb-12">Our Products</h2>
+  
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+  
+        <!-- Product 1 -->
+        <div class="bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col h-full">
+          <img src="./img/p-atc.jpg" alt="Automatic Changeover Switch" class="w-full h-56 object-cover">
+          <div class="p-5 flex flex-col justify-between flex-grow">
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">Auto Changeover Switch</h3>
+              <p class="text-gray-400 text-sm mb-4">Seamlessly switches between PHCN and generator.</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
+              <span class="text-emerald-400 font-bold text-lg">₦45,000</span>
+              <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-1 rounded">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Product 2 -->
+        <div class="bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col h-full">
+          <img src="./img/p-sumo.jpg" alt="Auto Sump Pump Controller" class="w-full h-56 object-cover">
+          <div class="p-5 flex flex-col justify-between flex-grow">
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">Sump Pump Controller</h3>
+              <p class="text-gray-400 text-sm mb-4">Automatically manages water levels in your tanks.</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
+              <span class="text-emerald-400 font-bold text-lg">₦30,000</span>
+              <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-1 rounded">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Product 3 -->
+        <div class="bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col h-full">
+          <img src="./img/p-inverter.jpeg" alt="Smart Inverter System" class="w-full h-56 object-cover">
+          <div class="p-5 flex flex-col justify-between flex-grow">
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">Smart Inverter System</h3>
+              <p class="text-gray-400 text-sm mb-4">Reliable power backup with smart switching tech.</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
+              <span class="text-emerald-400 font-bold text-lg">₦120,000</span>
+              <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-1 rounded">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Product 4 -->
+        <div class="bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition overflow-hidden flex flex-col h-full">
+          <img src="./img/p-gadgets.jpeg" alt="Home Automation Kit" class="w-full h-56 object-cover">
+          <div class="p-5 flex flex-col justify-between flex-grow">
+            <div>
+              <h3 class="text-xl font-semibold text-white mb-2">Home Automation Kit</h3>
+              <p class="text-gray-400 text-sm mb-4">Control lights, fans, and appliances from your phone.</p>
+            </div>
+            <div class="flex items-center justify-between mt-auto">
+              <span class="text-emerald-400 font-bold text-lg">₦65,000</span>
+              <button class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm px-4 py-1 rounded">Add to Cart</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- view more button -->
+      <div class="flex justify-center mt-10">
+        <button class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2 px-8 rounded-full shadow-md transition duration-300">
+          View More
+        </button>
+      </div>
+    </div>
+  </section> <!--End of Product section -->
+  
+  
+  <!-- Portfolio Section -->
+  <section id="portfolio" class="py-20 bg-gray-700">
+    <div class="container mx-auto ">
+      <h2 class="text-3xl font-bold mb-10 text-white text-center ">Our Projects</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-4">
+        
+        <div class="bg-gray-800 rounded-lg shadow hover:shadow-lg transition hover:border-emerald-400 border border-gray-700">
+        <img src="./img/banner1.jpeg" alt="Project 2" class="w-full rounded mb-4">
+            <div class="p-4">
+                <h4 class="text-lg font-semibold text-white text-center mb-2"> Smart Home Automation Setup</h4>
+                <p>We upgraded this home with a full smart automation system, including ambient lighting, smart thermostats, touch-screen wall controls, and automated blinds. The result is a modern, energy-efficient living space with comfort at your fingertips</p>
+            </div>
+        </div>
+
+        <div class="bg-gray-800 rounded-lg shadow hover:shadow-lg transition hover:border-emerald-400 border border-gray-700">
+            <img src="./img/project2.jpeg" alt="Project 1" class="w-full rounded mb-4">
+            <div class="p-4">
+                <h4 class="text-lg font-semibold text-white text-center mb-2">Smart Water Level Controller</h4>
+                <p>In this project, we installed a smart water level controller with sensors in the tank and app-based monitoring. The system automatically manages the pump to prevent overflow and dry running — saving both water and energy.</p>
+            </div>
+          </div>
+
+        <div class="bg-gray-800 rounded-lg shadow hover:shadow-lg transition hover:border-emerald-400 border border-gray-700">
+            <img src="./img/project3.jpeg" alt="Project 3" class="w-full rounded mb-4">
+            <div class="p-4">
+                <h4 class="text-lg font-semibold text-white text-center mb-2"> Automatic Changeover Installation</h4>
+                <p>This installation features an automatic changeover switch that guarantees uninterrupted power by seamlessly switching between the main electricity supply and a backup generator. Designed with safety, neat wiring, and reliability in mind.</p>
+            </div>
+        </div>
+      </div>
+      <!-- view more button -->
+      <div class="flex justify-center mt-10">
+        <button class="bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-2 px-8 rounded-full shadow-md transition duration-300">
+          View More
+        </button>
+      </div>
+    </div>
+  </section> <!--End of Portfolio Section -->
+
+  <!-- Testimonies -->
+  <section id="testimonials" class="py-20">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl md:text-4xl font-semibold text-center mb-12 text-white">What Our Clients Say</h2>
+      <div class="swiper testimonial-swiper">
+        <div class="swiper-wrapper">
+          <!-- Testimonial 1 -->
+          <div class="swiper-slide testimonial-swiper-slide bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 hover:border-emerald-400 border border-gray-700 flex items-center space-x-4">
+            <img src="./img/t-ada.jpeg" alt="Mrs. Ada U." class="w-16 h-16 rounded-full object-cover">
+            <div>
+              <p>“Professional and reliable. They handled our home automation perfectly!”</p>
+              <span class="text-sm text-gray-400">— Mrs. Ada U.</span>
+            </div>
+          </div>
+  
+          <!-- Testimonial 2 -->
+          <div class="swiper-slide testimonial-swiper-slide bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 hover:border-emerald-400 border border-gray-700 flex items-center space-x-4">
+            <img src="./img/t-chinedu.jpeg" alt="Chinedu M." class="w-16 h-16 rounded-full object-cover">
+            <div>
+              <p>“Excellent electrical work done on time and within budget.”</p>
+              <span class="text-sm text-gray-400">— Chinedu M.</span>
+            </div>
+          </div>
+  
+          <!-- Testimonial 3 -->
+          <div class="swiper-slide testimonial-swiper-slide bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 hover:border-emerald-400 border border-gray-700 flex items-center space-x-4">
+            <img src="./img/t-fatima.jpeg" alt="Fatima D." class="w-16 h-16 rounded-full object-cover">
+            <div>
+              <p>“Very responsive and their tech team is highly knowledgeable.”</p>
+              <span class="text-sm text-gray-400">— Fatima D.</span>
+            </div>
+          </div>
+  
+          <!-- Testimonial 4 -->
+          <div class="swiper-slide testimonial-swiper-slide bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 hover:border-emerald-400 border border-gray-700 flex items-center space-x-4">
+            <img src="./img/t-lawson.jpeg" alt="Lawson R." class="w-16 h-16 rounded-full object-cover">
+            <div>
+              <p>“Very responsive and their tech team is highly affordable.”</p>
+              <span class="text-sm text-gray-400">— Lawson R.</span>
+            </div>
+          </div>
+  
+          <!-- Testimonial 5 -->
+          <div class="swiper-slide testimonial-swiper-slide bg-gray-800 rounded-lg shadow hover:shadow-lg transition p-4 hover:border-emerald-400 border border-gray-700 flex items-center space-x-4">
+            <img src="./img/t-tonye.jpeg" alt="Tonye D." class="w-16 h-16 rounded-full object-cover">
+            <div>
+              <p>“Very responsive and their products are rugged.”</p>
+              <span class="text-sm text-gray-400">— Tonye D.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section> <!-- End of Testimonies -->
+  
+
+
+  <!-- Why you should choose us -->
+  <section class="py-20 bg-gray-800 text-white text-center">
+    <div class="container mx-auto">
+      <h2 class="text-3xl font-bold mb-10">Why Choose HomeSolutions?</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-gray-700 p-6 rounded-lg"><h3 class="text-xl font-semibold mb-2 text-emerald-400">✔️ Expert Team</h3><p class="text-gray-300">Years of experience in home automation.</p></div>
+        <div class="bg-gray-700 p-6 rounded-lg"><h3 class="text-xl font-semibold mb-2 text-emerald-400">✔️ Quality Equipment</h3><p class="text-gray-300">Top-tier products from trusted manufacturers.</p></div>
+        <div class="bg-gray-700 p-6 rounded-lg"><h3 class="text-xl font-semibold mb-2 text-emerald-400">✔️ Ongoing Support</h3><p class="text-gray-300">We're here even after installation is done.</p></div>
+      </div>
+    </div>
+  </section> <!--End of Why you should choose us -->
+
+  <!-- FAQ -->
+  <section class="py-20 bg-gray-700">
+    <div class="container mx-auto max-w-4xl">
+      <h2 class="text-3xl font-bold text-center mb-10 text-white">Frequently Asked Questions</h2>
+      <div class="space-y-6">
+        <!-- FAQ 1 -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h4 class="font-semibold text-emerald-400 cursor-pointer" onclick="toggleFAQ(1)">Q: How long does installation take?</h4>
+          <p id="faq-answer-1" class="text-gray-300 mt-2 hidden">A: Most installations are completed within 2–3 days.</p>
+        </div>
+        <!-- FAQ 2 -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h4 class="font-semibold text-emerald-400 cursor-pointer" onclick="toggleFAQ(2)">Q: Can I upgrade my existing system?</h4>
+          <p id="faq-answer-2" class="text-gray-300 mt-2 hidden">A: Yes, we can integrate new features into your current setup.</p>
+        </div>
+        <!-- FAQ 3 (New) -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h4 class="font-semibold text-emerald-400 cursor-pointer" onclick="toggleFAQ(3)">Q: What are the benefits of home automation?</h4>
+          <p id="faq-answer-3" class="text-gray-300 mt-2 hidden">A: Home automation enhances convenience, security, and energy efficiency in your home.</p>
+        </div>
+        <!-- FAQ 4 (New) -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h4 class="font-semibold text-emerald-400 cursor-pointer" onclick="toggleFAQ(4)">Q: Do you offer customer support after installation?</h4>
+          <p id="faq-answer-4" class="text-gray-300 mt-2 hidden">A: Yes, we provide ongoing support to ensure your system operates smoothly.</p>
+        </div>
+        <!-- FAQ 5 (New) -->
+        <div class="bg-gray-800 p-6 rounded-lg">
+          <h4 class="font-semibold text-emerald-400 cursor-pointer" onclick="toggleFAQ(5)">Q: Is there a warranty on the installation?</h4>
+          <p id="faq-answer-5" class="text-gray-300 mt-2 hidden">A: Yes, we offer a warranty on all installations for peace of mind.</p>
+        </div>
+      </div>
+    </div>
+  </section> <!--End of FAQ -->
+
+   <!-- Contact Section -->
+<section id="contact" class="bg-gray-800 py-20">
+    <div class="container mx-auto text-white px-4">
+      <h2 class="text-3xl font-bold text-center mb-6">Get in Touch</h2>
+      <p class="text-lg text-center mb-12 text-gray-300">We'd love to hear from you. Feel free to reach out!</p>
+  
+      <div class="flex flex-col md:flex-row md:justify-center gap-12 items-start">
+        
+        <!-- Contact Info (Left Side) -->
+        <div class="w-full md:w-1/2 lg:w-2/5">
+          <div class="mb-4 text-white">
+            <h2 class="text-2xl font-semibold mb-2">Need a Custom Electrical or Automation Design?</h2>
+            <p class="text-gray-300">Describe the type of circuit, automation, or setup you need — our team will review your request and get back to you shortly.</p>
+          </div>
+          <form action="/contact" method="POST" class="bg-gray-700 p-6 rounded-lg shadow-lg">
+            <input type="text" name="name" placeholder="Your Name" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border border-gray-600 text-white" required>
+            <input type="email" name="email" placeholder="Your Email" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border border-gray-600 text-white" required>
+            <textarea name="message" placeholder="Your Message (e.g. 'I want a smart changeover for my 3-bedroom apartment')" class="w-full p-3 mb-4 rounded-lg bg-gray-800 border border-gray-600 text-white" required></textarea>
+            <button type="submit" class="w-full py-3 px-6 bg-emerald-600 hover:bg-emerald-700 rounded-lg text-white transition-colors">Submit</button>
+          </form>
+        </div>
+        
+
+           <!-- Contact Form (Right Side) -->
+        <div class="w-full md:w-1/2 lg:w-1/3 text-left">
+          <h3 class="text-xl font-semibold mb-4 text-white">Our Office</h3>
+          <p class="text-lg mb-3 text-gray-300">1234 HomeStreet, CityCenter, Lagos, Nigeria</p>
+          <p class="text-lg mb-3 text-gray-300">Phone: +234 123 456 789</p>
+          <p class="text-lg mb-3 text-gray-300">Email: contact@homesolutions.com</p>
+          <a href="https://wa.me/yourphonenumber" class="bg-emerald-600 hover:bg-emerald-700 text-white py-3 px-6 rounded-full inline-block mt-2 transition-colors">Chat on WhatsApp</a>
+        </div>
+  
+      </div>
+    </div>
+  </section> <!-- End of Contact Section -->
+
+  <footer class="bg-gray-900 text-white py-10 text-center">
+    <div class="container mx-auto">
+      <p>&copy; 2025 HomeSolutions. All rights reserved.</p>
+      <p class="text-sm mt-2 text-gray-400">Made with 💡 in Nigeria</p>
+    </div>
+  </footer>
+  
+  <%- include('partials/footer') %>
+

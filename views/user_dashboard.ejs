@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: {
+              600: '#2563eb',
+              500: '#3b82f6',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .sidebar {
+      transition: transform 0.3s ease-in-out;
+    }
+    .sidebar-hidden {
+      transform: translateX(-100%);
+    }
+    .sidebar-visible {
+      transform: translateX(0);
+    }
+    .content-section {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    .animate-slide-in {
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<%- include('partials/alerts') %>
+<body class="bg-gray-50 text-gray-800 dark:bg-gray-900 dark:text-gray-200 transition-colors duration-300 font-[Inter]">
+
+  <!-- Mobile Menu Button -->
+  <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-50 bg-primary-600 text-white p-2 rounded-lg shadow-md hover:bg-primary-500 transition-colors">
+    <i data-lucide="menu" class="w-6 h-6"></i>
+  </button>
+
+  <!-- Overlay for Mobile Sidebar -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-40 md:hidden"></div>
+
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar sidebar-hidden fixed z-50 md:relative md:translate-x-0 md:flex md:flex-col bg-gray-800 text-white w-64 p-6 h-full border-r border-gray-700">
+      <div class="flex items-center mb-8">
+        <i data-lucide="user" class="w-8 h-8 text-primary-500 mr-2"></i>
+        <h2 class="text-2xl font-bold text-primary-400">User Panel</h2>
+      </div>
+      <nav class="space-y-2">
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="dashboard">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="orders">
+          <i data-lucide="package" class="w-5 h-5"></i>
+          <span>Orders</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="messages">
+          <i data-lucide="mail" class="w-5 h-5"></i>
+          <span>Messages</span>
+          <span class="ml-auto bg-primary-500 text-xs px-2 py-1 rounded-full">2</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="services">
+          <i data-lucide="wrench" class="w-5 h-5"></i>
+          <span>Services</span>
+        </a>
+        <a href="#" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700" data-target="settings">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span>Settings</span>
+        </a>
+        <a href="/" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg transition-colors hover:bg-gray-700">
+          <i data-lucide="log-out" class="w-5 h-5"></i>
+          <span>Logout</span>
+        </a>
+      </nav>
+      <div class="mt-auto pt-6 border-t border-gray-700">
+        <div class="flex items-center gap-3 px-4 py-3 rounded-lg bg-gray-700">
+          <div class="w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center">
+            <i data-lucide="user" class="w-4 h-4"></i>
+          </div>
+          <div>
+            <p class="text-sm font-medium">User Name</p>
+            <p class="text-xs text-gray-400">user@example.com</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 overflow-y-auto pt-20 md:pt-6" id="main-content">
+      <header class="flex justify-between items-center mb-8">
+        <h1 class="text-2xl font-bold text-primary-500" id="page-title">Dashboard</h1>
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <i data-lucide="bell" class="w-5 h-5"></i>
+            <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+          </div>
+          <button id="mode-toggle" class="bg-gray-200 dark:bg-gray-700 px-3 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
+            <i data-lucide="moon" id="mode-icon" class="w-4 h-4 hidden dark:block"></i>
+            <i data-lucide="sun" id="mode-icon-light" class="w-4 h-4 block dark:hidden"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Dashboard Section -->
+      <section id="dashboard" class="content-section">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-semibold mb-4">Welcome, User Name</h2>
+            <p class="text-gray-500 dark:text-gray-400">Here's an overview of your account.</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-semibold mb-4">Account Summary</h2>
+            <p class="text-gray-500 dark:text-gray-400">Total Orders: <span class="text-yellow-400">12</span></p>
+            <p class="text-gray-500 dark:text-gray-400">Account Status: <span class="text-green-400">Active</span></p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-semibold mb-4">New Products</h2>
+            <ul class="space-y-2">
+              <li class="text-gray-500 dark:text-gray-400">Smart Lighting Kit</li>
+              <li class="text-gray-500 dark:text-gray-400">Surveillance Camera Pro</li>
+            </ul>
+            <a href="#" class="text-blue-400 hover:text-blue-300 mt-4 inline-block">View More</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Orders Section -->
+      <section id="orders" class="content-section hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+            <h3 class="text-lg font-semibold">Order History</h3>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+              <thead class="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Order ID</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Date</th>
+                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Amount</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">#12345</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Completed</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-05-15</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">$245.00</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">#12346</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Processing</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-05-14</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">$189.00</td>
+                </tr>
+                <tr>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">#12347</td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200">Shipped</span>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">2023-05-13</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">$320.00</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
+            <div class="text-sm text-gray-500 dark:text-gray-400">Showing <span class="font-medium">1</span> to <span class="font-medium">3</span> of <span class="font-medium">12</span> results</div>
+            <div class="flex space-x-2">
+              <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700">Previous</button>
+              <button class="px-3 py-1 rounded-md bg-primary-600 text-white text-sm font-medium hover:bg-primary-700">1</button>
+              <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700">2</button>
+              <button class="px-3 py-1 rounded-md border border-gray-300 dark:border-gray-600 text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700">Next</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Messages Section -->
+      <section id="messages" class="content-section hidden">
+        <div class="bg-white dark:bg-gray-900 rounded-xl shadow-lg border border-gray-200 dark:border-gray-800 max-w-2xl mx-auto overflow-hidden transition-all duration-300">
+          <div class="p-6 border-b border-gray-200 dark:border-gray-800">
+            <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-100">Messages</h3>
+          </div>
+          <div id="message-list" class="divide-y divide-gray-200 dark:divide-gray-800 max-h-96 overflow-y-auto">
+            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer message-item animate-slide-in" 
+                 data-sender="Support Team" 
+                 data-email="support@company.com"
+                 data-time="1 hour ago"
+                 data-subject="Your recent order #12345"
+                 data-message="Thank you for your order #12345. It has been successfully processed and will be shipped soon.">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                  <div class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5 text-primary-600 dark:text-primary-400"></i>
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">Support Team</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">1 hour ago</p>
+                  </div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Your recent order #12345</p>
+                </div>
+              </div>
+            </div>
+            <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer message-item animate-slide-in" 
+                 data-sender="Service Team" 
+                 data-email="service@company.com"
+                 data-time="1 day ago"
+                 data-subject="Service Request Update"
+                 data-message="Your electrical repair request is scheduled for July 25, 2024. We'll send a confirmation soon.">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0">
+                  <div class="w-10 h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                    <i data-lucide="user" class="w-5 h-5 text-green-600 dark:text-green-400"></i>
+                  </div>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-center justify-between">
+                    <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">Service Team</p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400">1 day ago</p>
+                  </div>
+                  <p class="text-sm text-gray-500 dark:text-gray-400 truncate">Service Request Update</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="p-4 border-t border-gray-200 dark:border-gray-800">
+            <textarea id="new-message" rows="2" class="w-full p-3 border border-gray-300 dark:border-gray-700 rounded-lg bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 placeholder-gray-400 dark:placeholder-gray-500 resize-none transition-all duration-200" placeholder="Type your message..."></textarea>
+            <button id="send-btn" class="w-full mt-2 bg-primary-600 text-white py-2 rounded-lg hover:bg-primary-700 dark:hover:bg-primary-500 font-medium transition-colors duration-200">Send</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Message Modal -->
+      <div id="message-modal" class="fixed inset-0 z-50 hidden">
+        <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-50"></div>
+        <div class="relative z-50 max-w-2xl mx-auto mt-12">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
+              <div class="flex justify-between items-center">
+                <h3 id="form-title" class="text-lg font-semibold text-gray-900 dark:text-gray-100">Message Details</h3>
+                <button id="modal-close" class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
+                  <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+              </div>
+            </div>
+            <div id="view-reply-content" class="p-6">
+              <div class="mb-6">
+                <div class="flex justify-between items-start mb-2">
+                  <div>
+                    <p id="modal-sender" class="text-lg font-medium text-gray-900 dark:text-gray-100">Support Team</p>
+                    <p id="modal-email" class="text-sm text-gray-500 dark:text-gray-400">support@company.com</p>
+                  </div>
+                  <p id="modal-time" class="text-sm text-gray-500 dark:text-gray-400">1 hour ago</p>
+                </div>
+                <h4 id="modal-subject" class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Your recent order #12345</h4>
+                <p id="modal-message" class="text-gray-700 dark:text-gray-300">Thank you for your order #12345. It has been successfully processed and will be shipped soon.</p>
+              </div>
+              <form id="reply-form" class="space-y-4">
+                <div>
+                  <label for="reply-message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Your Response</label>
+                  <textarea id="reply-message" rows="4" class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:text-white" placeholder="Type your reply here..."></textarea>
+                </div>
+                <div class="flex justify-end space-x-3">
+                  <button id="cancel-reply" type="button" class="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">Cancel</button>
+                  <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">Send Reply</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Sidebar Toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    menuToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('sidebar-hidden');
+      sidebar.classList.toggle('sidebar-visible');
+      overlay.classList.toggle('hidden');
+    });
+
+    overlay.addEventListener('click', () => {
+      sidebar.classList.add('sidebar-hidden');
+      sidebar.classList.remove('sidebar-visible');
+      overlay.classList.add('hidden');
+    });
+
+    // Dark Mode Toggle
+    const modeToggle = document.getElementById('mode-toggle');
+    modeToggle.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+    });
+
+    // Load dark mode preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.documentElement.classList.add('dark');
+    }
+
+    // Section Navigation
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const contentSections = document.querySelectorAll('.content-section');
+    const pageTitle = document.getElementById('page-title');
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = link.getAttribute('data-target');
+        
+        contentSections.forEach(section => {
+          section.classList.add('hidden');
+          if (section.id === target) {
+            section.classList.remove('hidden');
+          }
+        });
+
+        pageTitle.textContent = target.charAt(0).toUpperCase() + target.slice(1);
+        
+        // Close sidebar on mobile after click
+        if (window.innerWidth < 768) {
+          sidebar.classList.add('sidebar-hidden');
+          sidebar.classList.remove('sidebar-visible');
+          overlay.classList.add('hidden');
+        }
+      });
+    });
+
+    // Messages Section Logic
+    const itemsPerPage = 2;
+    let currentPage = 1;
+
+    const messageItems = document.querySelectorAll('.message-item');
+    const totalPages = Math.ceil(messageItems.length / itemsPerPage);
+
+    function updatePagination() {
+      messageItems.forEach((item, index) => {
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        item.style.display = index >= start && index < end ? 'block' : 'none';
+        if (index >= start && index < end) {
+          item.classList.add('animate-slide-in');
+          setTimeout(() => item.classList.remove('animate-slide-in'), 300);
+        }
+      });
+    }
+
+    document.getElementById('send-btn').addEventListener('click', () => {
+      const text = document.getElementById('new-message').value.trim();
+      if (text) {
+        const newDiv = document.createElement('div');
+        newDiv.className = 'p-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer message-item animate-slide-in';
+        newDiv.innerHTML = `
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+              <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <i data-lucide="user" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">You</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Just now</p>
+              </div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 truncate">${text}</p>
+            </div>
+          </div>
+        `;
+        newDiv.dataset.sender = 'You';
+        newDiv.dataset.email = 'user@example.com';
+        newDiv.dataset.time = 'Just now';
+        newDiv.dataset.subject = text;
+        newDiv.dataset.message = text;
+        document.getElementById('message-list').appendChild(newDiv);
+        document.getElementById('new-message').value = '';
+
+        // Update message items and pagination
+        const newItems = document.querySelectorAll('.message-item');
+        const newTotalPages = Math.ceil(newItems.length / itemsPerPage);
+        currentPage = newTotalPages;
+        updatePagination();
+
+        // Auto-scroll to bottom
+        const messageList = document.getElementById('message-list');
+        messageList.scrollTop = messageList.scrollHeight;
+
+        // Re-attach modal event listeners
+        attachModalListeners();
+      }
+    });
+
+    // Modal Logic
+    const messageModal = document.getElementById('message-modal');
+    const modalOverlay = document.getElementById('modal-overlay');
+    const modalClose = document.getElementById('modal-close');
+    const cancelReply = document.getElementById('cancel-reply');
+    const replyForm = document.getElementById('reply-form');
+
+    function openModal(sender, email, time, subject, message) {
+      document.getElementById('modal-sender').textContent = sender;
+      document.getElementById('modal-email').textContent = email;
+      document.getElementById('modal-time').textContent = time;
+      document.getElementById('modal-subject').textContent = subject;
+      document.getElementById('modal-message').textContent = message;
+      messageModal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      messageModal.classList.add('hidden');
+      document.getElementById('reply-message').value = '';
+    }
+
+    function attachModalListeners() {
+      document.querySelectorAll('.message-item').forEach(item => {
+        item.addEventListener('click', () => {
+          const { sender, email, time, subject, message } = item.dataset;
+          openModal(sender, email, time, subject, message);
+        });
+      });
+    }
+
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+    cancelReply.addEventListener('click', closeModal);
+
+    replyForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const replyText = document.getElementById('reply-message').value.trim();
+      if (replyText) {
+        const newDiv = document.createElement('div');
+        newDiv.className = 'p-4 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer message-item animate-slide-in';
+        newDiv.innerHTML = `
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0">
+              <div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <i data-lucide="user" class="w-5 h-5 text-blue-600 dark:text-blue-400"></i>
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between">
+                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">You</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Just now</p>
+              </div>
+              <p class="text-sm text-gray-500 dark:text-gray-400 truncate">${replyText}</p>
+            </div>
+          </div>
+        `;
+        newDiv.dataset.sender = 'You';
+        newDiv.dataset.email = 'user@example.com';
+        newDiv.dataset.time = 'Just now';
+        newDiv.dataset.subject = replyText;
+        newDiv.dataset.message = replyText;
+        document.getElementById('message-list').appendChild(newDiv);
+
+        // Update message items and pagination
+        const newItems = document.querySelectorAll('.message-item');
+        const newTotalPages = Math.ceil(newItems.length / itemsPerPage);
+        currentPage = newTotalPages;
+        updatePagination();
+
+        // Auto-scroll to bottom
+        const messageList = document.getElementById('message-list');
+        messageList.scrollTop = messageList.scrollHeight;
+
+        // Close modal and reset form
+        closeModal();
+
+        // Re-attach modal event listeners
+        attachModalListeners();
+      }
+    });
+
+    // Initialize Messages Section
+    updatePagination();
+    attachModalListeners();
+  </script>
+</body>
+</html>
