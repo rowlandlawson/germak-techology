@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('partials/storeHead') %>
+  <title>Booked Services</title>
+</head>
+<body class="bg-gray-900 text-white font-inter">
+  <div class="container mx-auto px-4 py-8">
+    <%- include('partials/storeNavbar') %>
+
+    <h1 class="text-3xl font-semibold mb-6 text-blue-400">📋 Booked Services</h1>
+
+    <% if (bookings.length === 0) { %>
+      <p class="text-gray-400">No services booked yet.</p>
+    <% } else { %>
+      <ul class="space-y-4">
+        <% bookings.forEach(service => { %>
+          <li class="bg-gray-800 p-4 rounded-lg">
+            <h3 class="text-white font-semibold mb-1"><%= service.name %></h3>
+            <p class="text-gray-400"><%= service.description %></p>
+            <p class="text-sm text-gray-500 mt-2">Booked by: <%= service.user %></p>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </div>
+</body>
+</html>

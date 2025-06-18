@@ -12,8 +12,11 @@ import { fileURLToPath } from "url";
 
 import connectDB from "./config/db.js";
 import configurePassport from "./config/passport.js";
+
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
+import storeRoute from "./routes/storeRoute.js";
+
 import User from "./models/User.js";
 import { createDefaultAdmin } from './controllers/adminController.js';
 
@@ -81,6 +84,7 @@ const startServer = async () => {
     // Routes
     app.use("/", userRoutes);
     app.use("/admin", adminRoutes);
+    app.use("/store", storeRoute)
 
     // ✅ Upload photo route
     app.post("/upload-photo", upload.single("photo"), async (req, res) => {
