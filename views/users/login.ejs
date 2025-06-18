@@ -1,5 +1,5 @@
-<%- include('partials/header') %>
-<%- include('partials/alerts') %>
+<%- include('../partials/header') %>
+<%- include('../partials/alerts') %>
 <section class="min-h-screen flex items-center justify-center px-4 py-10">
   <div class="w-full max-w-4xl bg-white rounded-2xl shadow-lg overflow-hidden grid grid-cols-1 md:grid-cols-3">
 
@@ -13,18 +13,31 @@
           <input type="email" name="username" id="email"
             class="w-full px-4 py-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500" required>
         </div>
-
+      
         <div>
           <label for="password" class="block text-gray-700 font-semibold mb-1">Password</label>
           <input type="password" name="password" id="password"
             class="w-full px-4 py-2 border border-gray-300 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500" required>
         </div>
-
+      
+        <!-- Links container -->
+        <div class="flex justify-between mt-2 space-x-4">
+          <a href="/forgot"
+            class="flex-1 text-center bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white py-2 rounded-md font-semibold transition duration-300">
+            Forgot Password?
+          </a>
+          <a href="/register"
+            class="flex-1 text-center bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white py-2 rounded-md font-semibold transition duration-300">
+            Sign Up
+          </a>
+        </div>
+      
         <button type="submit"
           class="w-full bg-gradient-to-r from-blue-600 to-emerald-600 hover:from-blue-700 hover:to-emerald-700 text-white py-2 rounded-md font-semibold transition duration-300">
           Login
         </button>
       </form>
+      
     </div>
 
     <!-- Right: OAuth Login -->
@@ -45,4 +58,4 @@
   </div>
 </section>
 
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

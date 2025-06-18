@@ -1,24 +1,34 @@
-// config/passport.js
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import User from "../models/User.js";
+import Admin from "../models/admin.js";
 
 const configurePassport = () => {
-  passport.use(User.createStrategy());
+  // Register local strategies
+  passport.use('user-local', User.createStrategy());
+  passport.use('admin-local', Admin.createStrategy());
 
+  // Serialize based on user role
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, { id: user.id, role: user.role || 'user' }); // default to 'user' if not set
   });
 
-  passport.deserializeUser(async (id, done) => {
+  // Deserialize based on role
+  passport.deserializeUser(async (key, done) => {
     try {
-      const user = await User.findById(id);
-      done(null, user);
+      if (key.role === 'admin') {
+        const admin = await Admin.findById(key.id);
+        return done(null, admin);
+      } else {
+        const user = await User.findById(key.id);
+        return done(null, user);
+      }
     } catch (err) {
-      done(err);
+      return done(err);
     }
   });
 
+  // Google OAuth strategy for users
   passport.use(
     new GoogleStrategy(
       {
@@ -30,18 +40,16 @@ const configurePassport = () => {
       async (accessToken, refreshToken, profile, done) => {
         try {
           const existingUser = await User.findOne({ googleId: profile.id });
-          if (existingUser) {
-            return done(null, existingUser);
-          } else {
-            const newUser = new User({
-              googleId: profile.id,
-              displayName: profile.displayName,
-              photo: profile.photos?.[0]?.value,
-              username: `google_${profile.displayName}`,
-            });
-            await newUser.save();
-            done(null, newUser);
-          }
+          if (existingUser) return done(null, existingUser);
+
+          const newUser = new User({
+            googleId: profile.id,
+            displayName: profile.displayName,
+            photo: profile.photos?.[0]?.value,
+            username: `google_${profile.displayName}`,
+          });
+          await newUser.save();
+          done(null, newUser);
         } catch (err) {
           done(err, null);
         }

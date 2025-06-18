@@ -2,27 +2,79 @@ import User from '../models/User.js';
 import crypto from 'crypto';
 import sendVerificationEmail from '../utils/sendEmail.js';
 import passport from 'passport';
+import path from 'path';
+import fs from 'fs';
 
 // Render pages
 export const renderHome = (req, res) => res.render('home');
-export const renderRegister = (req, res) => res.render('register');
-export const renderLogin = (req, res) => res.render('login');
-export const renderVerify = (req, res) => res.render('verify', {
+export const renderRegister = (req, res) => res.render('users/register');
+export const renderLogin = (req, res) => res.render('users/login');
+export const renderVerify = (req, res) => res.render('users/verify', {
   email: req.user?.username,
   error: null,
   messages: req.flash()
 });
-export const renderDashboard = (req, res) => res.render('user_dashboard', { user: req.user });
-export const renderForgot = (req, res) => res.render('forgot');
-export const renderReset = (req, res) => res.render('reset', { token: req.params.token });
+export const renderDashboard = (req, res) => res.render('users/user_dashboard', { user: req.user });
+export const renderForgot = (req, res) => res.render('users/forgot');
+export const renderReset = (req, res) => res.render('users/reset', { token: req.params.token });
+
+// upload images
+export const uploadPhoto = async (req, res) => {
+  try {
+    if (!req.file) {
+      req.flash('error', 'No file uploaded');
+      return res.redirect('/user_dashboard');
+    }
+
+    const user = await User.findById(req.user._id);
+
+    // Delete old photo if it exists and is local
+    if (user.photo && user.photo.startsWith('/uploads/')) {
+      const oldPath = path.join('public', user.photo);
+      if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+      }
+    }
+
+    // Save new path
+    user.photo = `/uploads/${req.file.filename}`;
+    await user.save();
+
+    req.flash('success', 'Profile photo updated successfully!');
+    res.redirect('/user_dashboard');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Something went wrong');
+    res.redirect('/user_dashboard');
+  }
+};
+
 
 // REGISTER
 export const registerUser = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { fullName, username, phone, password } = req.body;
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const user = await User.register({ username,code }, password);
+    // ✅ Use fullName as displayName if provided
+    let displayName = fullName?.trim();
+
+    // ✅ If no full name or it's empty, generate name from email
+    if (!displayName) {
+      const emailName = username.split('@')[0]; // before @
+      displayName = emailName
+        .replace(/[0-9]/g, '') // remove numbers
+        .split(/[._]/g)        // split on dot or underscore
+        .filter(Boolean)       // remove empty parts
+        .map(name => name.charAt(0).toUpperCase() + name.slice(1))
+        .join(' ') || 'User';
+    }
+
+    // ✅ Register new user
+    const user = await User.register(
+      { username, phone, displayName, verificationCode: code },
+      password
+    );
 
     await sendVerificationEmail(username, code, `Your verification code is: <b>${code}</b>`);
 
@@ -42,15 +94,19 @@ export const registerUser = async (req, res) => {
   }
 };
 
+
+
 // LOGIN
 export const loginUser = (req, res) => {
   if (!req.user.isVerified) {
     req.flash('error', 'Account not verified. Please check your email for the code.');
     return res.redirect('/verify');
   }
-  req.flash('success', 'Login successful. Welcome back!');
+
+  req.flash('success', `Login successful. Welcome back`);
   res.redirect('/user_dashboard');
 };
+
 
 // LOGOUT
 export const logoutUser = (req, res, next) => {
@@ -113,8 +169,9 @@ export const forgotPassword = async (req, res) => {
     req.flash('error', 'No account found with that email.');
     return res.redirect('/forgot');
   }
+  
 
-  const token = crypto.randomBytes(20).toString('hex');
+  const token = crypto.randomBytes(6).toString('hex');
   user.resetPasswordToken = token;
   user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
   await user.save();
@@ -122,44 +179,65 @@ export const forgotPassword = async (req, res) => {
   const protocol = req.protocol === 'https' || process.env.NODE_ENV === 'production' ? 'https' : 'http';
   const resetLink = `${protocol}://${req.headers.host}/reset/${token}`;
 
-  await sendVerificationEmail(user.username, 'Password Reset', `Reset your password here: <a href="${resetLink}">${resetLink}</a>`);
+  // await sendVerificationEmail(user.username, token, `Reset your password here: <a href="${resetLink}">${resetLink}</a>`);
+  await sendVerificationEmail(user.username, token, `
+  You requested a password reset. Use this token: <b>${token}</b>
+  <br><br>
+  Or click the link: <a href="${resetLink}">${resetLink}</a>
+`);
+
 
   req.flash('success', 'A password reset link has been sent to your email.');
-  res.redirect('/login');
+  res.redirect('/reset');
 };
 
 // RESET PASSWORD
 export const resetPassword = async (req, res) => {
-  const user = await User.findOne({
-    resetPasswordToken: req.params.token,
-    resetPasswordExpires: { $gt: Date.now() },
-  });
-
-  if (!user) {
-    req.flash('error', 'Reset link is invalid or has expired.');
-    return res.redirect('/forgot');
-  }
+  const { username, token, password } = req.body;
 
   try {
+    const user = await User.findOne({
+      username,
+      resetPasswordToken: token,
+      resetPasswordExpires: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      req.flash('error', 'Invalid token or email, or token expired.');
+      return res.redirect('/reset');
+    }
+
+    // Set new password
     await new Promise((resolve, reject) => {
-      user.setPassword(req.body.password, (err) => {
+      user.setPassword(password, (err) => {
         if (err) return reject(err);
         resolve();
       });
     });
 
+    // Clear reset token fields
     user.resetPasswordToken = undefined;
     user.resetPasswordExpires = undefined;
     await user.save();
 
-    req.flash('success', 'Your password has been reset. You can now log in.');
-    res.redirect('/login');
+    // Automatically log the user in after password reset
+    req.logIn(user, (err) => {
+      if (err) {
+        req.flash('error', 'Password reset successful, but automatic login failed. Please log in manually.');
+        return res.redirect('/login');
+      }
+
+      req.flash('success', 'Password reset and login successful.');
+      return res.redirect('/user_dashboard');
+    });
+
   } catch (err) {
     console.error('Password reset error:', err);
-    req.flash('error', 'Failed to reset password. Please try again.');
-    res.redirect('/forgot');
+    req.flash('error', 'Something went wrong. Please try again.');
+    return res.redirect('/reset');
   }
 };
+
 
 // GOOGLE AUTH
 export const googleAuth = passport.authenticate('google', {
